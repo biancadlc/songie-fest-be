@@ -63,3 +63,15 @@ def view_users(request):
         return Response(serializer.data)
     else:
         return Response(status=status.HTTP_404_NOT_FOUND)
+    
+
+@api_view(['POST'])
+def update_users(request, pk):
+    user = User.objects.get(pk=pk)
+    data = UserSerializer(instance=user, data=request.data)
+
+    if data.is_valid():
+        data.save()
+        return Response(data.data)
+    else:
+        return Response(status=status.HTTP_404_NOT_FOUND)
