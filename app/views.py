@@ -36,33 +36,33 @@ def add_user(request):
         return Response(status=status.HTTP_404_NOT_FOUND)
     
 # BROKEN CODE FROM GEEKS FOR GEEKS 
-# @api_view(['GET'])
-# def view_users(request):
-    
-#     # checking for the parameters from the URL
-#     if request.query_params:
-#         users = User.objects.filter(**request.query_param.dict())
-#     else:
-#         users = User.objects.all()
-
-#     # if there is something in items else raise error
-#     if users:
-#         data = UserSerializer(users)
-#         return Response(users.data)
-#     else:
-#         return Response(status=status.HTTP_404_NOT_FOUND)
-    
 @api_view(['GET'])
 def view_users(request):
+    
     # checking for the parameters from the URL
-    users = User.objects.all()
-    serializer = UserSerializer(users, many=True)
+    if request.query_params:
+        users = User.objects.filter(**request.query_param.dict())
+    else:
+        users = User.objects.all()
 
     # if there is something in items else raise error
     if users:
-        return Response(serializer.data)
+        data = UserSerializer(users)
+        return Response(users.data)
     else:
         return Response(status=status.HTTP_404_NOT_FOUND)
+    
+# @api_view(['GET'])
+# def view_users(request):
+#     # checking for the parameters from the URL
+#     users = User.objects.all()
+#     serializer = UserSerializer(users, many=True)
+
+#     # if there is something in items else raise error
+#     if users:
+#         return Response(serializer.data)
+#     else:
+#         return Response(status=status.HTTP_404_NOT_FOUND)
     
 
 @api_view(['POST'])
