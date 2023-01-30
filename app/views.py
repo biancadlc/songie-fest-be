@@ -104,6 +104,7 @@ def user_list(request):
         serializer = UserSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
+            # create_message = f"User has been successfully created"
             return Response(serializer.data,
                             status=status.HTTP_201_CREATED)
         return Response(serializer.errors,
@@ -113,7 +114,7 @@ def user_list(request):
 @api_view(['GET','PUT','PATCH','DELETE'])
 def user_detail(request, pk):
     '''
-    If GET, retrieve a single user instance based on primary key
+    If GET, retrieve a single user instance based on primary key (id)
     If PUT, update instance & save to db
     If DELETE, delete the instance from fb
     '''
@@ -148,15 +149,18 @@ def user_detail(request, pk):
 
     elif request.method == 'DELETE':
         user.delete()
+        # delete_message = f'User {pk} has been deleted'
         return Response(status=status.HTTP_204_NO_CONTENT)
+    
     
     
 # ============================= 
 #        MUSIC POST ROUTES            
 # ============================= 
 # user has to be logged in to view/delete music post 
+# GET all music posts, create a music post
+
 @api_view(['GET', 'POST'])
-@permission_classes([IsAuthenticated])
 def musicpost_list(request):
     '''
     List all music posts, or create a new music post
@@ -176,12 +180,28 @@ def musicpost_list(request):
                         status=status.HTTP_400_BAD_REQUEST)
         
 
+
+# === GET ALL music postS for a user, CREATE ONE music post for a user
+
+@api_view(['GET', 'POST'])
+@permission_classes([IsAuthenticated])
+def musicpost_list(request, user_id):
+    '''
+    List all music posts, or create a new music post for a user 
+    '''
+    
+    
+    
+        
+# === GET a SINGLE music post, DELETE a single music post
+# === UPDATE like/comment on a single music post 
 @api_view(['GET', 'DELETE'])
 @permission_classes([IsAuthenticated])
 def musicpost_detail(request, pk):
     '''
-    If GET, retrieve a single music post based on primary key
+    If GET, retrieve a single music post based on primary key (music post id)
     If DELETE, delete the instance from db
+    If PATCH, like or comment on a music post
     '''
     try:
         music_post = MusicPost.objects.get(pk=pk)
@@ -194,4 +214,71 @@ def musicpost_detail(request, pk):
     
     elif request.method == 'DELETE':
         music_post.delete()
+        # delete_message = f'Music Post {pk} has been deleted'
         return Response(status=status.HTTP_204_NO_CONTENT)
+    
+
+    
+    # elif request.method == 'PATCH':
+    #     serializer = MusicPostSerializer(music_post,
+    #                                 data=request.data,
+    #                                 partial=True)
+
+    #     if serializer.is_valid():
+    #         serializer.save()
+    #         return Response(serializer.data)
+    #     return Response(serializer.errors,
+    #                     status=status.HTTP_400_BAD_REQUEST)
+        
+
+# need routes for like & comment 
+    # "/<musicpost_id>/like"
+    # "/<musicpost_id>/comment"
+    
+@api_view(['PATCH'])
+def musicpost_like(request, pk):
+    '''
+    Like a music post 
+    '''
+    try:
+        music_post = MusicPost.objects.get(pk=pk)
+    except MusicPost.DoesNotExist:
+        return Response(status=status.HTPP_404_NOT_FOUND)
+    
+    
+    if request.method == 'PATCH':
+        serializer = MusicPostSerializer(music_post,
+                                        data=request.data,
+                                        partial=True)
+
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors,
+                        status=status.HTTP_400_BAD_REQUEST)
+        
+    # music_post.save()
+    # return Response({"message": "Music post liked!"})
+
+
+@api_view(['PATCH'])
+def musicpost_comment(request, pk):
+    '''
+    Comment on a music post
+    '''
+    try:
+        music_post = MusicPost.objects.get(pk=pk)
+    except MusicPost.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'PATCH':
+        serializer = MusicPostSerializer(music_post,
+                                        data=request.data,
+                                        partial=True)
+
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors,
+                        status=status.HTTP_400_BAD_REQUEST)
+        
