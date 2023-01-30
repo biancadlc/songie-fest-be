@@ -113,7 +113,7 @@ def musicpost_list(request):
 @api_view(['GET', 'POST'])
 def get_music_posts_one_user(request, username):
     '''
-    List all music posts, or create a new music post
+    List all music posts, or create a new music post for a user
     '''
     try:
         user = User.objects.get(username=username)
