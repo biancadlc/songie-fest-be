@@ -15,34 +15,37 @@ class User(models.Model):
 
 
 class MusicPost(models.Model):   
-    user = models.ForeignKey(User, on_delete=models.CASCADE) 
+    user = models.ForeignKey(User, related_name='music_posts',on_delete=models.CASCADE, null=True) 
     date_modified = models.DateTimeField(auto_now=True)
     date_published = models.DateTimeField(auto_now_add=True)
+    likes_count = models.IntegerField(default=0)
+    def __str__(self):
+        date = str(self.date_published).split(' ')[0]
+        object_string = f"{self.user} posted on {date}"
+        return object_string
 
 
 class Song(models.Model): 
     title = models.CharField(max_length=255)
     artist = models.CharField(max_length=255)
     album = models.CharField(max_length=255)
-    music_post = models.ForeignKey(MusicPost, on_delete=models.CASCADE)
+    music_post = models.ForeignKey(MusicPost, related_name='songs', on_delete=models.CASCADE)
     play_count = models.IntegerField()
     date_published = models.DateTimeField(auto_now_add=True)
 
+    def __str__(self):
+        object_string = f'{self.title} by {self.artist}'
+        return object_string
+
 
 class Comment(models.Model):
-    music_post= models.ForeignKey(MusicPost, related_name='comment', on_delete=models.CASCADE)
-    user = models.ForeignKey(User, related_name='comment', on_delete=models.CASCADE)
-    comment = models.TextField(max_length=500)
+    music_post= models.ForeignKey(MusicPost, related_name='comments', on_delete=models.CASCADE)
+    user = models.ForeignKey(User, related_name='comments', on_delete=models.CASCADE)
+    text = models.TextField(max_length=500)
     date_published = models.DateTimeField(auto_now_add=True)
-    
+    def __str__(self):
+        return str(self.text)
 
-class Like(models.Model):
-    # user = represents user who liked post, deleting user deletes like
-    user = models.ForeignKey(User, related_name='like', on_delete=models.CASCADE)
-    music_post = models.ForeignKey(MusicPost, related_name='like', on_delete=models.CASCADE)
-    date_published = models.DateTimeField(auto_now_add=True)
-    
-    
 
 
 # class Profile(models.Model): 

@@ -2,9 +2,9 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import status, serializers
 from rest_framework.response import Response
-from .models import User, MusicPost, Song, Comment, Like
+from .models import User, MusicPost, Song, Comment
 from .serializers import UserSerializer,  MusicPostSerializer, \
-    SongSerializer, CommentSerializer, LikeSerializer
+    SongSerializer, CommentSerializer
         
 
 # ====== Geeks for Geeks tutorial ====== #
@@ -190,50 +190,50 @@ def musicpost_detail(request, pk):
     # "/<musicpost_id>/like"
     # "/<musicpost_id>/comment"
     
-@api_view(['PATCH'])
-def musicpost_like(request, pk):
-    '''
-    Like a music post 
-    '''
-    try:
-        music_post = MusicPost.objects.get(pk=pk)
-    except MusicPost.DoesNotExist:
-        return Response(status=status.HTPP_404_NOT_FOUND)
+# @api_view(['PATCH'])
+# def musicpost_like(request, pk):
+#     '''
+#     Like a music post 
+#     '''
+#     try:
+#         music_post = MusicPost.objects.get(pk=pk)
+#     except MusicPost.DoesNotExist:
+#         return Response(status=status.HTPP_404_NOT_FOUND)
     
     
-    if request.method == 'PATCH':
-        serializer = MusicPostSerializer(music_post,
-                                        data=request.data,
-                                        partial=True)
+#     if request.method == 'PATCH':
+#         serializer = MusicPostSerializer(music_post,
+#                                         data=request.data,
+#                                         partial=True)
 
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors,
-                        status=status.HTTP_400_BAD_REQUEST)
+#         if serializer.is_valid():
+#             serializer.save()
+#             return Response(serializer.data)
+#         return Response(serializer.errors,
+#                         status=status.HTTP_400_BAD_REQUEST)
         
     # music_post.save()
     # return Response({"message": "Music post liked!"})
 
 
-@api_view(['PATCH'])
-def musicpost_comment(request, pk):
-    '''
-    Comment on a music post
-    '''
-    try:
-        music_post = MusicPost.objects.get(pk=pk)
-    except MusicPost.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)
+# @api_view(['PATCH'])
+# def musicpost_comment(request, pk):
+#     '''
+#     Comment on a music post
+#     '''
+#     try:
+#         music_post = MusicPost.objects.get(pk=pk)
+#     except MusicPost.DoesNotExist:
+#         return Response(status=status.HTTP_404_NOT_FOUND)
 
-    if request.method == 'PATCH':
-        serializer = MusicPostSerializer(music_post,
-                                        data=request.data,
-                                        partial=True)
+#     if request.method == 'PATCH':
+#         serializer = MusicPostSerializer(music_post,
+#                                         data=request.data,
+#                                         partial=True)
 
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors,
-                        status=status.HTTP_400_BAD_REQUEST)
-        
+#         if serializer.is_valid():
+#             serializer.save()
+#             return Response(serializer.data)
+#         return Response(serializer.errors,
+#                         status=status.HTTP_400_BAD_REQUEST)
+

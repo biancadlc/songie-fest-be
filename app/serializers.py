@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.db.models import fields
-from .models import User, MusicPost, Song, Comment, Like
+from .models import User, MusicPost, Song, Comment
 
 
 # fields included in serializer --> what data is returned in API response
@@ -29,8 +29,5 @@ class CommentSerializer(serializers.ModelSerializer):
         fields = ('id', 'user', 'comment', 'date_published')
 
 
-class LikeSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Like
-        fields = ('id', 'user', 'date_published')
+
 
