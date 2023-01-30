@@ -37,6 +37,9 @@ def user_list(request):
                         status=status.HTTP_400_BAD_REQUEST)
 
 
+
+
+
 @api_view(['GET','PUT','PATCH','DELETE'])
 def user_detail(request, pk):
     '''
@@ -96,6 +99,7 @@ def musicpost_list(request):
         serializer = MusicPostSerializer(music_post, many=True)
         return Response(serializer.data)
 
+
     elif request.method == 'POST':
         serializer = MusicPostSerializer(data=request.data)
         if serializer.is_valid():
@@ -106,15 +110,40 @@ def musicpost_list(request):
                         status=status.HTTP_400_BAD_REQUEST)
         
 
+@api_view(['GET', 'POST'])
+def get_music_posts_one_user(request, username):
+    '''
+    List all music posts, or create a new music post
+    '''
+    try:
+        user = User.objects.get(username=username)
+    except User.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'GET':
+        id = user.pk
+
+        music_posts = MusicPost.objects.filter(user=id)
+        serializer = MusicPostSerializer(music_posts, many=True)
+        return Response(serializer.data)
+
+    elif request.method == 'POST':
+        serializer = MusicPostSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data,
+                            status=status.HTTP_201_CREATED)
+        return Response(serializer.errors,
+                        status=status.HTTP_400_BAD_REQUEST)
 
 # === GET ALL music posts for a user, CREATE ONE music post for a user
 
-@api_view(['GET', 'POST'])
-@permission_classes([IsAuthenticated])
-def musicpost_list(request, pk):
-    '''
-    List all music posts, or create a new music post for a user 
-    '''
+# @api_view(['GET', 'POST'])
+# @permission_classes([IsAuthenticated])
+# def musicpost_list(request, pk):
+#     '''
+#     List all music posts, or create a new music post for a user 
+#     '''
     
     
     

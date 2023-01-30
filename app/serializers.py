@@ -7,7 +7,7 @@ from .models import User, MusicPost, Song, Comment, Like
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('id', 'email', 'password', 'username', 'date_published')
+        fields = ('id', 'email', 'username', 'date_published')
         
         
 
