@@ -78,6 +78,7 @@ def user_detail(request, pk):
         # delete_message = f'User {pk} has been deleted'
         return Response(status=status.HTTP_204_NO_CONTENT)
     
+
     
     
 # ============================= 
@@ -132,6 +133,7 @@ def musicpost_detail(request, pk):
     try:
         music_post = MusicPost.objects.get(pk=pk)
     except MusicPost.DoesNotExist:
+
         return Response(status=status.HTTP_404_NOT_FOUND)
 
     if request.method == 'GET':
@@ -172,6 +174,7 @@ def musicpost_like(request, pk):
         return Response(status=status.HTPP_404_NOT_FOUND)
     
     
+
     if request.method == 'PATCH':
         serializer = MusicPostSerializer(music_post,
                                         data=request.data,
@@ -196,6 +199,7 @@ def musicpost_comment(request, pk):
         music_post = MusicPost.objects.get(pk=pk)
     except MusicPost.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
+
 
     if request.method == 'PATCH':
         serializer = MusicPostSerializer(music_post,
