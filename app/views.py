@@ -7,80 +7,6 @@ from .serializers import UserSerializer,  MusicPostSerializer, \
     SongSerializer, CommentSerializer, LikeSerializer
         
 
-# @api_view(['GET'])
-# def AppOverview(request):
-#     app_urls = {
-#         'all_users': '/',
-#         'Email': '/?email=email',
-#         'Username': '/?username=username',
-#         'Date Account Created': '/?date_published=date_published',
-#         'Add': '/create',
-#         'Update': '/update/pk',
-#         'Delete': 'user/pk/delete'
-#     }
-
-#     return Response(app_urls)
-
-
-# @api_view(['POST'])
-# def add_user(request):
-#     user = UserSerializer(data=request.data)
-    
-#     # validating for already existing data
-#     if User.objects.filter(**request.data).exists():
-#         raise serializers.ValidationError('This data already exists')
-
-#     if user.is_valid():
-#         user.save()
-#         return Response(user.data)
-#     else:
-#         return Response(status=status.HTTP_404_NOT_FOUND)
-    
-# # BROKEN CODE FROM GEEKS FOR GEEKS 
-# # @api_view(['GET'])
-# # def view_users(request):
-    
-# #     # checking for the parameters from the URL
-# #     if request.query_params:
-# #         users = User.objects.filter(**request.query_param.dict())
-# #     else:
-# #         users = User.objects.all()
-
-# #     # if there is something in items else raise error
-# #     if users:
-# #         data = UserSerializer(users)
-# #         return Response(users.data)
-# #     else:
-# #         return Response(status=status.HTTP_404_NOT_FOUND)
-    
-# @api_view(['GET'])
-# def view_users(request):
-#     # checking for the parameters from the URL
-#     users = User.objects.all()
-#     serializer = UserSerializer(users, many=True)
-
-#     # if there is something in items else raise error
-#     if users:
-#         return Response(serializer.data)
-#     else:
-#         return Response(status=status.HTTP_404_NOT_FOUND)
-    
-
-# @api_view(['POST'])
-# def update_users(request, pk):
-#     user = User.objects.get(pk=pk)
-#     data = UserSerializer(instance=user, data=request.data)
-
-#     if data.is_valid():
-#         data.save()
-#         return Response(data.data)
-#     else:
-#         return Response(status=status.HTTP_404_NOT_FOUND)
-
-
-
-    
-
 # ====== Geeks for Geeks tutorial ====== #
 # retrieves all the user's data using the objects.all() method.
 # Serializes data using UserSerializer.
@@ -181,11 +107,11 @@ def musicpost_list(request):
         
 
 
-# === GET ALL music postS for a user, CREATE ONE music post for a user
+# === GET ALL music posts for a user, CREATE ONE music post for a user
 
 @api_view(['GET', 'POST'])
 @permission_classes([IsAuthenticated])
-def musicpost_list(request, user_id):
+def musicpost_list(request, pk):
     '''
     List all music posts, or create a new music post for a user 
     '''
