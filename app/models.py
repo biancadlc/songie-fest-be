@@ -49,20 +49,11 @@ class Comment(models.Model):
     def __str__(self):
         return str(self.text)
 
-
-# === Revised COMMENT model ==== #
-class Comment(models.Model):
-    username = models.ForeignKey(User, related_name='comments', on_delete=models.CASCADE)
-    music_post= models.ForeignKey(MusicPost, related_name='comments', on_delete=models.CASCADE)
-    body = models.TextField(max_length=500)
-    date_published = models.DateTimeField(auto_now_add=True)
-    date_modified = models.DateTimeField(auto_now=True)
-
-    class Meta:
-        ordering = ('date_published',)
+    # class Meta:
+    #     ordering = ('date_published',)
         
-    def __str__(self):
-        return 'Comment by {} on {}'.format(self.username, self.music_post)
+    # def __str__(self):
+    #     return 'Comment by {} on {}'.format(self.username, self.music_post)
 
 
 
