@@ -29,13 +29,6 @@ class CommentSerializer(serializers.ModelSerializer):
         fields = ('id', 'user', 'text', 'date_published')
 
 
-# === revising comment === #
-
-class CommentSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Comment
-        fields = ('id', 'username', 'body', 'date_published')
-
 
 
 
