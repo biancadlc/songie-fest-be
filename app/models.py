@@ -7,8 +7,8 @@ class User(models.Model):
     last_name = models.CharField(max_length=36)
     email = models.CharField(max_length=36)
     password = models.CharField(max_length=16)
-    date_modified = models.DateTimeField(auto_now=True)
     date_published = models.DateTimeField(auto_now_add=True)
+    date_modified = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return str(self.username)
@@ -16,9 +16,10 @@ class User(models.Model):
 
 class MusicPost(models.Model):   
     user = models.ForeignKey(User, related_name='music_posts',on_delete=models.CASCADE, null=True) 
-    date_modified = models.DateTimeField(auto_now=True)
     date_published = models.DateTimeField(auto_now_add=True)
+    date_modified = models.DateTimeField(auto_now=True)
     likes_count = models.IntegerField(default=0)
+    
     def __str__(self):
         date = str(self.date_published).split(' ')[0]
         object_string = f"{self.user} posted on {date}"
@@ -43,8 +44,25 @@ class Comment(models.Model):
     user = models.ForeignKey(User, related_name='comments', on_delete=models.CASCADE)
     text = models.TextField(max_length=500)
     date_published = models.DateTimeField(auto_now_add=True)
+    date_modified = models.DateTimeField(auto_now=True)
+    
     def __str__(self):
         return str(self.text)
+
+
+# === Revised COMMENT model ==== #
+class Comment(models.Model):
+    username = models.ForeignKey(User, related_name='comments', on_delete=models.CASCADE)
+    music_post= models.ForeignKey(MusicPost, related_name='comments', on_delete=models.CASCADE)
+    body = models.TextField(max_length=500)
+    date_published = models.DateTimeField(auto_now_add=True)
+    date_modified = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ('date_published',)
+        
+    def __str__(self):
+        return 'Comment by {} on {}'.format(self.username, self.music_post)
 
 
 

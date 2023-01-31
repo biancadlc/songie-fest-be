@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from .models import User, MusicPost, Song, Comment
 from .serializers import UserSerializer,  MusicPostSerializer, \
     SongSerializer, CommentSerializer
-        
+
 
 # ====== Geeks for Geeks tutorial ====== #
 # retrieves all the user's data using the objects.all() method.
@@ -35,8 +35,6 @@ def user_list(request):
                             status=status.HTTP_201_CREATED)
         return Response(serializer.errors,
                         status=status.HTTP_400_BAD_REQUEST)
-
-
 
 
 
@@ -90,6 +88,7 @@ def user_detail(request, pk):
 # GET all music posts, create a music post
 
 @api_view(['GET', 'POST'])
+@permission_classes([IsAuthenticated])
 def musicpost_list(request):
     '''
     List all music posts, or create a new music post
@@ -111,9 +110,11 @@ def musicpost_list(request):
         
 
 @api_view(['GET', 'POST'])
+@permission_classes([IsAuthenticated])
 def get_music_posts_one_user(request, username):
     '''
-    List all music posts, or create a new music post for a user
+    List all music posts for a user 
+    Create a new music post for a user
     '''
     try:
         user = User.objects.get(username=username)
@@ -136,27 +137,14 @@ def get_music_posts_one_user(request, username):
         return Response(serializer.errors,
                         status=status.HTTP_400_BAD_REQUEST)
 
-# === GET ALL music posts for a user, CREATE ONE music post for a user
 
-# @api_view(['GET', 'POST'])
-# @permission_classes([IsAuthenticated])
-# def musicpost_list(request, pk):
-#     '''
-#     List all music posts, or create a new music post for a user 
-#     '''
-    
-    
-    
-        
 # === GET a SINGLE music post, DELETE a single music post
-# === UPDATE like/comment on a single music post 
 @api_view(['GET', 'DELETE'])
 @permission_classes([IsAuthenticated])
 def musicpost_detail(request, pk):
     '''
     If GET, retrieve a single music post based on primary key (music post id)
     If DELETE, delete the instance from db
-    If PATCH, like or comment on a music post
     '''
     try:
         music_post = MusicPost.objects.get(pk=pk)
@@ -173,67 +161,60 @@ def musicpost_detail(request, pk):
         return Response(status=status.HTTP_204_NO_CONTENT)
     
 
-    
-    # elif request.method == 'PATCH':
-    #     serializer = MusicPostSerializer(music_post,
-    #                                 data=request.data,
-    #                                 partial=True)
 
-    #     if serializer.is_valid():
-    #         serializer.save()
-    #         return Response(serializer.data)
-    #     return Response(serializer.errors,
-    #                     status=status.HTTP_400_BAD_REQUEST)
-        
-
+# ============================= 
+#      COMMENT/LIKE  ROUTES            
+# =============================      
+# UPDATE like/comment on a single music post === #
 # need routes for like & comment 
     # "/<musicpost_id>/like"
     # "/<musicpost_id>/comment"
-    
-# @api_view(['PATCH'])
-# def musicpost_like(request, pk):
-#     '''
-#     Like a music post 
-#     '''
-#     try:
-#         music_post = MusicPost.objects.get(pk=pk)
-#     except MusicPost.DoesNotExist:
-#         return Response(status=status.HTPP_404_NOT_FOUND)
-    
-    
-#     if request.method == 'PATCH':
-#         serializer = MusicPostSerializer(music_post,
-#                                         data=request.data,
-#                                         partial=True)
 
-#         if serializer.is_valid():
-#             serializer.save()
-#             return Response(serializer.data)
-#         return Response(serializer.errors,
-#                         status=status.HTTP_400_BAD_REQUEST)
+@api_view(['GET', 'POST'])
+@permission_classes([IsAuthenticated])
+def comment_list(request, pk):
+    '''
+    List all comments for a specific music post 
+    Create a new comment
+    '''
+    try:
+        music_post = MusicPost.objects.get(pk=pk)
+    except MusicPost.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'GET':
+        # retrieve all Comment objects that belong to the MusicPost 
+        comments = Comment.objects.filter(music_post=music_post)
+        serializer = CommentSerializer(comments, many=True)
+        return Response(serializer.data)
+
+    elif request.method == 'POST':
+        serializer = CommentSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save(user=request.user, music_post=music_post)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+
+# ===== LIKE a Music Post ===== #
+api_view(['PATCH'])
+@permission_classes([IsAuthenticated])
+def like_music_post(request, pk):
+    '''
+    Like a music post
+    '''
+    try:
+        music_post = MusicPost.objects.get(pk=pk)
+    except MusicPost.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'PATCH':
+        music_post.likes_count += 1
+        music_post.save()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+    
+    
+    
+    
+
         
-    # music_post.save()
-    # return Response({"message": "Music post liked!"})
-
-
-# @api_view(['PATCH'])
-# def musicpost_comment(request, pk):
-#     '''
-#     Comment on a music post
-#     '''
-#     try:
-#         music_post = MusicPost.objects.get(pk=pk)
-#     except MusicPost.DoesNotExist:
-#         return Response(status=status.HTTP_404_NOT_FOUND)
-
-#     if request.method == 'PATCH':
-#         serializer = MusicPostSerializer(music_post,
-#                                         data=request.data,
-#                                         partial=True)
-
-#         if serializer.is_valid():
-#             serializer.save()
-#             return Response(serializer.data)
-#         return Response(serializer.errors,
-#                         status=status.HTTP_400_BAD_REQUEST)
-
