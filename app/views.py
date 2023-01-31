@@ -165,10 +165,6 @@ def musicpost_detail(request, pk):
 # ============================= 
 #      COMMENT/LIKE  ROUTES            
 # =============================      
-# UPDATE like/comment on a single music post === #
-# need routes for like & comment 
-    # "/<musicpost_id>/like"
-    # "/<musicpost_id>/comment"
 
 @api_view(['GET', 'POST'])
 @permission_classes([IsAuthenticated])
@@ -197,24 +193,27 @@ def comment_list(request, pk):
     
 
 # ===== LIKE a Music Post ===== #
-api_view(['PATCH'])
-@permission_classes([IsAuthenticated])
-def like_music_post(request, pk):
-    '''
-    Like a music post
-    '''
-    try:
-        music_post = MusicPost.objects.get(pk=pk)
-    except MusicPost.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)
+# api_view(['PATCH'])
+# @permission_classes([IsAuthenticated])
+# def like_music_post(request, pk):
+#     '''
+#     Like a music post
+#     '''
+#     try:
+#         music_post = MusicPost.objects.get(pk=pk)
+#     except MusicPost.DoesNotExist:
+#         return Response(status=status.HTTP_404_NOT_FOUND)
 
-    if request.method == 'PATCH':
-        music_post.likes_count += 1
-        music_post.save()
-        return Response(status=status.HTTP_204_NO_CONTENT)
-    
-    
-    
+#     if request.method == 'PATCH':
+#         serializer = MusicPostSerializer(MusicPost,
+#                                     data=request.data,
+#                                     partial=True)
+
+#         if serializer.is_valid():
+#             # music_post.likes_count += 1
+#             serializer.save()
+#             return Response(serializer.data)
+#         return Response(status=status.HTTP_204_NO_CONTENT)
     
 
         

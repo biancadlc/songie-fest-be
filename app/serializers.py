@@ -14,7 +14,7 @@ class UserSerializer(serializers.ModelSerializer):
 class MusicPostSerializer(serializers.ModelSerializer):
     class Meta:
         model = MusicPost
-        fields = ('id', 'user', 'date_published')
+        fields = ('id', 'user', 'date_published', 'likes_count')
         
 
 class SongSerializer(serializers.ModelSerializer):
