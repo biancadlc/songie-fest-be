@@ -19,7 +19,7 @@ environ.Env.read_env()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
+# AUTH_USER_MODEL = "app.User"
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
@@ -36,6 +36,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    # 'app',
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -44,8 +45,24 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     'app.apps.AppConfig',
     'rest_framework',
+    'rest_framework.authtoken',
     'corsheaders',
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+        # 'rest_framework.authentication.SessionAuthentication', #added this random
+    
+    ],
+
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    
+    ]
+}
+
+
 
 MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",
@@ -75,6 +92,7 @@ TEMPLATES = [
         },
     },
 ]
+AUTH_USER_MODEL = 'app.User'
 
 WSGI_APPLICATION = "songiefest.wsgi.application"
 
