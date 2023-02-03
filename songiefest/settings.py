@@ -102,20 +102,18 @@ WSGI_APPLICATION = "songiefest.wsgi.application"
 
 import dj_database_url
 
-DATABASES = {
-    'default': dj_database_url.config(conn_max_age=600)
-}
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': env("DB_NAME"),
-#         'USER': env("DB_USER"),
-#         'PASSWORD': env("DB_PASSWORD"),
-#         'HOST': env("DB_HOST"),
-#         'PORT': env("DB_PORT"),
-#     }
-# }
 
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': env("DB_NAME"),
+        'USER': env("DB_USER"),
+        'PASSWORD': env("DB_PASSWORD"),
+        'HOST': env("DB_HOST"),
+        'PORT': env("DB_PORT"),
+    }
+}
+DATABASES['default'] = dj_database_url.config(conn_max_age=600, default=DATABASES['default'])
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
