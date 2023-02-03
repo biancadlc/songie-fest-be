@@ -30,7 +30,7 @@ SECRET_KEY = env('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['songiefest-be.herokuapp.com']
+ALLOWED_HOSTS = ['songiefest-be.herokuapp.com', 'localhost']
 
 
 # Application definition
@@ -113,12 +113,14 @@ import dj_database_url
 #         'PORT': env("DB_PORT"),
 #     }
 # }
-# DATABASES['default'] = dj_database_url.config(conn_max_age=600, default=DATABASES['default'])
+# DATABASES['default'] = dj_database_url.config(conn_max_age=600)
 
-
-DATABASES = {
-    'default': dj_database_url.config(conn_max_age=600)
-}
+DATABASES = {}
+DATABASES['default'] = dj_database_url.config(conn_max_age=600)
+# DATABASES = {
+#     'default': dj_database_url.config(conn_max_age=600),
+#     'ENGINE': 'django.db.backends.postgresql',
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
@@ -165,3 +167,12 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
 ]
+
+
+# This should already be in your settings.py
+import django_heroku
+
+django_heroku.settings(locals())
+# This is new
+options = DATABASES['default'].get('OPTIONS', {})
+options.pop('sslmode', None)
