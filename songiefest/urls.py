@@ -22,6 +22,13 @@ from rest_framework.authtoken.views import obtain_auth_token
 # ==== GEEKS FOR GEEKS ====#
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path('', include('app.urls')),
+    path('explore/', include('app.urls.explore_urls')),
+    path('users/', include('app.urls.users_urls')),
+    path('register/', include('app.urls.register_urls')),
+    path('music_post/', include('app.urls.music_post_urls')),
+    path('<str:username>/', include('app.urls.profile_urls')),
+
+    path('login/', obtain_auth_token, name='login'), 
+    
     path('auth/', obtain_auth_token)
 ]

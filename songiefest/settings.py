@@ -36,7 +36,6 @@ ALLOWED_HOSTS = ['songiefest-be.herokuapp.com', 'localhost']
 # Application definition
 
 INSTALLED_APPS = [
-    # 'app',
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -113,14 +112,15 @@ import dj_database_url
 #         'PORT': env("DB_PORT"),
 #     }
 # }
-# DATABASES['default'] = dj_database_url.config(conn_max_age=600)
+
 
 DATABASES = {}
 DATABASES['default'] = dj_database_url.config(conn_max_age=600)
-# DATABASES = {
-#     'default': dj_database_url.config(conn_max_age=600),
-#     'ENGINE': 'django.db.backends.postgresql',
-# }
+
+
+
+
+
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
@@ -176,3 +176,4 @@ django_heroku.settings(locals())
 # This is new
 options = DATABASES['default'].get('OPTIONS', {})
 options.pop('sslmode', None)
+
