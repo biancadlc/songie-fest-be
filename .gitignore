@@ -5,3 +5,36 @@ venv
 .env
 
 .vscode
+
+
+
+# chat gpt told me to put this stuff here
+*.env
+*.venv
+
+# Ignore all Python bytecode
+*.pyc
+__pycache__/
+
+# Ignore local SQLite database
+db.sqlite3
+
+# Ignore local media files
+media/
+
+# Ignore local static files
+static/
+
+# Ignore secret keys and passwords
+.env
+.env.*
+secrets.*
+
+# Ignore OS-specific files
+.DS_Store
+Thumbs.db
+.Spotlight-V100
+.Trashes
+
+# Ignore all logs
+*.log
