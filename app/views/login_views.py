@@ -23,9 +23,9 @@ def login_user(request, username, password):
         user = User.objects.get(username=username)
     except User.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
-    if password == user.password:
-        data = {'response': 'Success'}
-        return Response(data, status=status.HTTP_200_OK)
+    # if password == user.password:
+    #     data = {'response': 'Success'}
+    return Response(status=status.HTTP_200_OK)
 
     # if request.method == 'GET':
     #     id = user.pk
