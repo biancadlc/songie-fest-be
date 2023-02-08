@@ -29,6 +29,7 @@ urlpatterns = [
     path('<str:username>/', include('app.urls.profile_urls')),
 
     path('login/', obtain_auth_token, name='login'), 
-    
+    # path('login/', include('app.urls.login_urls')),
+
     path('auth/', obtain_auth_token)
 ]
