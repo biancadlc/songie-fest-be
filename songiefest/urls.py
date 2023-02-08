@@ -26,10 +26,11 @@ urlpatterns = [
     path('users/', include('app.urls.users_urls')),
     path('register/', include('app.urls.register_urls')),
     path('music_post/', include('app.urls.music_post_urls')),
+    path('login/', include('app.urls.login_urls')),
     path('<str:username>/', include('app.urls.profile_urls')),
 
     # path('login/', obtain_auth_token, name='login'), 
-    path('login/', include('app.urls.login_urls')),
+
 
     path('auth/', obtain_auth_token)
 ]
