@@ -15,14 +15,14 @@ from django.contrib.auth import get_user_model
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
-def login_user(request, username, password):
+def login_user(request):
     '''
     logs in user
     '''
-    try:
-        user = User.objects.get(username=username)
-    except User.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)
+    # try:
+    #     user = User.objects.get(username=request.data['username'])
+    # except User.DoesNotExist:
+    #     return Response(status=status.HTTP_404_NOT_FOUND)
     # if password == user.password:
     #     data = {'response': 'Success'}
     return Response(status=status.HTTP_200_OK)
