@@ -8,7 +8,15 @@ from rest_framework.authtoken.models import Token
 
 
 
+# register_data = [{
+#         'username': 'ericgarcia',
+#         'password': 'songiefest',
+#         'email': 'ericgarcia@gmail.com',
+#         'first_name': 'eric',
+#         'last_name': 'garcia'
+#         }
 
+# ]
 
 
 @api_view(['POST'])
@@ -20,8 +28,6 @@ def register_view(request):
     post request for /register/ endpoint
     you need to use authorization header in postman also dont forget end slash for register/
     '''
-    # try:
-        # put for loop here lines 55 -58
     serializer = UserSerializer(data=request.data)
     data = {}
     if serializer.is_valid():
@@ -33,6 +39,3 @@ def register_view(request):
     else:
         data = serializer.errors
     return Response(data)
-    # except:
-    #     message = {'detail': 'User with this email already exists'}
-    #     return Response(message, status=status.HTTP_400_BAD_REQUEST)

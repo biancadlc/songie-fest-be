@@ -1,6 +1,6 @@
 from django.urls import path
 from app.views import explore_views as views
-from rest_framework.authtoken.views import obtain_auth_token
+
 
 
 

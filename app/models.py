@@ -75,7 +75,52 @@ def create_auth_token(sender, instance=None, created=False, **kwargs):
     
 
 
-
+data = {
+    'biancadlc': [
+        {'likes_count': 9,
+        'date_published': 'Feb',
+        'songs': [
+                    {'title':'Yellow ',
+                    'artist': 'Coldplay',
+                    'frequency_count': 200 },
+                    {'title':'Rainbo ',
+                    'artist': 'JustaGent',
+                    'frequency_count': 90 }
+                            ]
+        },
+        {'likes_count': 9,
+        'date_published': 'april',
+        'songs': [
+            {'title':'Fix you ',
+            'artist': 'Coldplay',
+            'frequency_count': 8 },
+            {'title':'Hold on ',
+            'artist': 'jonas',
+            'frequency_count': 400 }
+            ]
+        }],
+    'thaolee': [
+        {'likes_count': 9,
+        'date_published': 'Feb',
+        'songs': [
+                {'title':'Yellow ',
+                'artist': 'Coldplay',
+                'frequency_count': 200 },
+                {'title':'Rainbo ',
+                'artist': 'JustaGent',
+                'frequency_count': 90 }]
+                },
+        {'likes_count': 9,
+        'date_published': 'april',
+        'songs': [
+                {'title':'Fix you ',
+                'artist': 'Coldplay',
+                'frequency_count': 8 },
+                {'title':'Hold on ',
+                'artist': 'jonas',
+                'frequency_count': 400 }]
+                }]
+    }
 
 
 class MusicPost(models.Model):   
