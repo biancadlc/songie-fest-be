@@ -3,8 +3,9 @@ from rest_framework.decorators import api_view, permission_classes, authenticati
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import status, serializers
 from rest_framework.response import Response
-from .. models import  MusicPost
+from .. models import  MusicPost, User
 from ..serializers import  MusicPostSerializer
+from django.shortcuts import get_object_or_404
 
 from django.contrib.auth import get_user_model
 
@@ -14,7 +15,35 @@ from django.contrib.auth import get_user_model
 # user has to be logged in (pass token in header) to view music posts
 # GET all music posts, create a music post
 
-@api_view(['GET',])
+
+# UNCOMMENT THIS INCASE OF EMERGENCY
+# post_data = [{
+    
+#         'user': 1,
+#         'username': 'ericgarcia',
+#         'likes_count': 9,
+#         },
+#         {
+#         'user': 2,
+#         'username': 'yamaxu',
+#         'likes_count': 4,
+#         },
+
+#         {
+#         'user': 3,
+#         'username': 'biancadlc',
+#         'likes_count': 3,
+#         },
+#         {
+#         'user': 4,
+#         'username': 'shelbyw',
+#         'likes_count': 2,
+#         },
+        
+
+# ]
+
+@api_view(['GET', 'POST'])
 @permission_classes([IsAuthenticated])
 def explore_posts(request):
     '''
@@ -42,17 +71,26 @@ def explore_posts(request):
                     }
                 post['songs'].append(song_info)
             data[username].append(post)
-        # serializer = MusicPostSerializer(music_posts, many=True)
-        # return Response(serializer.data)
         return Response(data)
 
+    # USE THIS TO QUICKLY RECOVER DATABASE CONTENT
+    # UNCOMMENT THIS INCASE OF EMERGENCY
+    # elif request.method == 'POST':
+    #     for post in post_data:
+    #         serializer = MusicPostSerializer(data=post)
+    #         if serializer.is_valid():
+    #             serializer.save()
+    #             return Response(serializer.data,
+    #                             status=status.HTTP_201_CREATED)
+    #     return Response(serializer.errors,
+    #                     status=status.HTTP_400_BAD_REQUEST)
 
+    
     elif request.method == 'POST':
         serializer = MusicPostSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
-            
             return Response(serializer.data,
                             status=status.HTTP_201_CREATED)
-        return Response(serializer.errors,
-                        status=status.HTTP_400_BAD_REQUEST)
+    return Response(serializer.errors,
+                    status=status.HTTP_400_BAD_REQUEST)
