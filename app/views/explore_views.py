@@ -60,11 +60,13 @@ def explore_posts(request):
             #checks if username is in dictionary and if not starts with fresh list
             # data[username] = []
             post = {}
+            post['id'] = music_post_dict['id']
             post['date'] = music_post_dict['date_published'].__str__().split(' ')[0]
             post['likes_count'] = music_post_dict['likes_count']
             post['songs'] = []
             for song in music_post.songs.all():
                 song_info = {
+                    'id': song.id,
                     'title': song.title,
                     'artist': song.artist,
                     'play_count': song.play_count

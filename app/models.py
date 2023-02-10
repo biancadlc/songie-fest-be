@@ -77,46 +77,58 @@ def create_auth_token(sender, instance=None, created=False, **kwargs):
 
 data = {
     'biancadlc': [
-        {'likes_count': 9,
+        {'id': 1,
+        'likes_count': 9,
         'date_published': 'Feb',
         'songs': [
-                    {'title':'Yellow ',
+                    {'id': 4,
+                    'title':'Yellow ',
                     'artist': 'Coldplay',
                     'frequency_count': 200 },
-                    {'title':'Rainbo ',
+                    {'id': 5,
+                    'title':'Rainbo ',
                     'artist': 'JustaGent',
                     'frequency_count': 90 }
                             ]
         },
-        {'likes_count': 9,
+        {'id': 2,
+        'likes_count': 9,
         'date_published': 'april',
         'songs': [
-            {'title':'Fix you ',
+            {'id': 6,
+            'title':'Fix you ',
             'artist': 'Coldplay',
             'frequency_count': 8 },
-            {'title':'Hold on ',
+            {'id': 7,
+            'title':'Hold on ',
             'artist': 'jonas',
             'frequency_count': 400 }
             ]
         }],
     'thaolee': [
-        {'likes_count': 9,
+        {'id': 3,
+        'likes_count': 9,
         'date_published': 'Feb',
         'songs': [
-                {'title':'Yellow ',
+                {'id': 8,
+                'title':'Yellow ',
                 'artist': 'Coldplay',
                 'frequency_count': 200 },
-                {'title':'Rainbo ',
+                {'id': 9,
+                'title':'Rainbo ',
                 'artist': 'JustaGent',
                 'frequency_count': 90 }]
                 },
-        {'likes_count': 9,
+        {'id': 4,
+        'likes_count': 9,
         'date_published': 'april',
         'songs': [
-                {'title':'Fix you ',
+                {'id': 10,
+                'title':'Fix you ',
                 'artist': 'Coldplay',
                 'frequency_count': 8 },
-                {'title':'Hold on ',
+                {'id': 11,
+                'title':'Hold on ',
                 'artist': 'jonas',
                 'frequency_count': 400 }]
                 }]
