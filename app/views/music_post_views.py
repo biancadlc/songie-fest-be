@@ -34,6 +34,7 @@ def music_post_details(request, pk):
         post['id'] = music_post.id
         post['date'] = music_post.date_published.__str__().split(' ')[0]
         post['likes_count'] = music_post.likes_count
+        post['username'] = str(music_post.username)
         post['songs'] = []
         for song in music_post.songs.all():
             song_info = {
