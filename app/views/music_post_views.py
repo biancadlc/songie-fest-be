@@ -113,5 +113,21 @@ def delete_comment(request, pk, id):
     
         return Response(data=data)
     
-
+# =======================================================================================
+#     musicpost/ get-username /<user_id>  ROUTE      
+# =======================================================================================  
         
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_username(request, pk):
+    '''
+    returns username when supplied user id as a param
+    '''
+    try:
+        user = User.objects.get(pk=pk)
+    except MusicPost.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    data = {}
+    data['username'] = user.username
+    return Response(data)
