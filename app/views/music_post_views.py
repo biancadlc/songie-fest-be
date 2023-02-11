@@ -30,6 +30,21 @@ def music_post_details(request, pk):
 
 
     if request.method == 'GET':
+        post = {}
+        post['id'] = music_post.id
+        post['date'] = music_post.date_published.__str__().split(' ')[0]
+        post['likes_count'] = music_post.likes_count
+        post['songs'] = []
+        for song in music_post.songs.all():
+            song_info = {
+                'id': song.id,
+                'title': song.title,
+                'artist': song.artist,
+                'play_count': song.play_count
+                }
+            post['songs'].append(song_info)
+            
+        return Response(post)
         serializer = MusicPostSerializer(music_post)
         return Response(serializer.data)
     
@@ -72,7 +87,7 @@ def comment_list(request, pk):
         # retrieve all Comment objects that belong to the MusicPost 
         comments = Comment.objects.filter(music_post=music_post)
         serializer = CommentSerializer(comments, many=True)
-        print(serializer.data)
+
         return Response(serializer.data)
 
     elif request.method == 'POST':
