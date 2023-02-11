@@ -72,6 +72,7 @@ def comment_list(request, pk):
         # retrieve all Comment objects that belong to the MusicPost 
         comments = Comment.objects.filter(music_post=music_post)
         serializer = CommentSerializer(comments, many=True)
+        print(serializer.data)
         return Response(serializer.data)
 
     elif request.method == 'POST':
@@ -114,20 +115,19 @@ def delete_comment(request, pk, id):
         return Response(data=data)
     
 # =======================================================================================
-#     musicpost/ get-username /<user_id>  ROUTE      
+#     musicpost/ get-username /<commentid> ROUTE      THIS IS NEWW
 # =======================================================================================  
         
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
-def get_username(request, pk):
+def get_username(request, commentid):
     '''
-    returns username when supplied user id as a param
+    returns username that posted comment when supplied comment id
     '''
     try:
-        user = User.objects.get(pk=pk)
+        comment = Comment.objects.get(pk=commentid)
     except MusicPost.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
-
     data = {}
-    data['username'] = user.username
+    data['username'] = comment.user.username
     return Response(data)

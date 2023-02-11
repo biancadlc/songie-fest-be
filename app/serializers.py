@@ -43,7 +43,7 @@ class SongSerializer(serializers.ModelSerializer):
 class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
-        fields = ('id', 'text', 'date_published')
+        fields = ('id', 'text', 'date_published', )
 
 
 
