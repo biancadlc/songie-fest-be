@@ -4,7 +4,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework import status, serializers
 from rest_framework.response import Response
 from .. models import  MusicPost, User
-from ..serializers import  MusicPostSerializer
+from ..serializers import  MusicPostSerializer, UserSerializer
 from django.shortcuts import get_object_or_404
 
 from django.contrib.auth import get_user_model
@@ -76,6 +76,8 @@ def explore_posts(request):
             data[username].append(post)
         return Response(data)
 
+
+
     # USE THIS TO QUICKLY RECOVER DATABASE CONTENT
     # UNCOMMENT THIS INCASE OF EMERGENCY
     # elif request.method == 'POST':
@@ -95,5 +97,30 @@ def explore_posts(request):
             serializer.save()
             return Response(serializer.data,
                             status=status.HTTP_201_CREATED)
+    return Response(serializer.errors,
+                    status=status.HTTP_400_BAD_REQUEST)
+
+
+# ==========================================================
+#        /explore/ <music pk> / likes    ROUTE           
+# ========================================================== 
+@api_view(['PATCH'])
+@permission_classes([IsAuthenticated])
+def change_like_count(request, pk):
+    '''
+    Send in a request that looks like this to change the likes
+    {'likes_count': 9,}
+    '''
+    try:
+        post = MusicPost.objects.get(pk=pk)
+    except MusicPost.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    serializer = MusicPostSerializer(post,
+                                    data=request.data,
+                                    partial=True)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data)
     return Response(serializer.errors,
                     status=status.HTTP_400_BAD_REQUEST)
