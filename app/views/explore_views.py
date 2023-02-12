@@ -51,7 +51,7 @@ def explore_posts(request):
     '''
     if request.method == 'GET':
         data = {}
-        data['user'] = str(request.user.first_name)
+        # data['user'] = str(request.user.first_name)
         for music_post in MusicPost.objects.all():
             music_post_dict = music_post.__dict__
 
