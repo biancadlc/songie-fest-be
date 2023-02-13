@@ -104,9 +104,9 @@ def explore_posts(request):
 # ==========================================================
 #        /explore/ <music pk> / likes    ROUTE           
 # ========================================================== 
-@api_view(['PATCH'])
+@api_view(['PATCH', 'GET'])
 @permission_classes([IsAuthenticated])
-def change_like_count(request, pk):
+def change_likes_count(request, pk):
     '''
     Send in a request that looks like this to change the likes
     {'likes_count': 9,}
@@ -115,12 +115,25 @@ def change_like_count(request, pk):
         post = MusicPost.objects.get(pk=pk)
     except MusicPost.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
+    if request.method == 'PATCH':
+        if post.likes.filter(id=request.user.id).exists():
+            post.likes.remove(request.user)
+        else:
+            post.likes.add(request.user)
+        serializer = MusicPostSerializer(post,
+                                        data=request.data,
+                                        partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors,
+                        status=status.HTTP_400_BAD_REQUEST)
+    elif request.method == 'GET':
+        data = {}
+        usernames = []
+        # print(post.likes.all())
+        for user in post.likes.all():
+            usernames.append(str(user))
 
-    serializer = MusicPostSerializer(post,
-                                    data=request.data,
-                                    partial=True)
-    if serializer.is_valid():
-        serializer.save()
-        return Response(serializer.data)
-    return Response(serializer.errors,
-                    status=status.HTTP_400_BAD_REQUEST)
+        data['usernames'] = usernames
+        return Response(data)

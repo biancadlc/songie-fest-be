@@ -141,6 +141,7 @@ class MusicPost(models.Model):
     date_published = models.DateTimeField(auto_now_add=True)
     date_modified = models.DateTimeField(auto_now=True)
     likes_count = models.IntegerField(default=0)
+    likes = models.ManyToManyField(User, related_name='music_post')
     
     def __str__(self):
         date = str(self.date_published).split(' ')[0]
