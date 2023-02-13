@@ -104,9 +104,9 @@ def explore_posts(request):
 # ==========================================================
 #        /explore/ <music pk> / likes    ROUTE           
 # ========================================================== 
-@api_view(['PATCH', 'GET'])
+@api_view(['GET'])
 @permission_classes([IsAuthenticated])
-def change_likes_count(request, pk):
+def get_username_likes(request, pk):
     '''
     Send in a request that looks like this to change the likes
     {'likes_count': 9,}
@@ -115,23 +115,8 @@ def change_likes_count(request, pk):
         post = MusicPost.objects.get(pk=pk)
     except MusicPost.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
-    if request.method == 'PATCH':
-        if post.likes.filter(id=request.user.id).exists():
-            post.likes.remove(request.user)
-        else:
-            post.likes.add(request.user)
-        data = {}
-        data['likes_count'] = post.total_likes()
-        # keep in mind that this functino ignores path request data
-        serializer = MusicPostSerializer(post,
-                                        data=data,
-                                        partial=True)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors,
-                        status=status.HTTP_400_BAD_REQUEST)
-    elif request.method == 'GET':
+    
+    if request.method == 'GET':
         data = {}
         usernames = []
         # print(post.likes.all())
@@ -140,3 +125,30 @@ def change_likes_count(request, pk):
 
         data['usernames'] = usernames
         return Response(data)
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_like_count(request, pk):
+    '''
+    get username count. each time you send a request it changes likecount
+    '''
+    try:
+        post = MusicPost.objects.get(pk=pk)
+    except MusicPost.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    if post.likes.filter(id=request.user.id).exists():
+        post.likes.remove(request.user)
+    else:
+        post.likes.add(request.user)
+    data = {}
+    data['likes_count'] = post.total_likes()
+    # keep in mind that this functino ignores path request data
+    serializer = MusicPostSerializer(post,
+                                    data=data,
+                                    partial=True)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data)
+    return Response(serializer.errors,
+                    status=status.HTTP_400_BAD_REQUEST)
