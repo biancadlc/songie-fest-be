@@ -143,6 +143,9 @@ class MusicPost(models.Model):
     likes_count = models.IntegerField(default=0)
     likes = models.ManyToManyField(User, related_name='music_post')
     
+    def total_likes(self):
+        return self.likes.count()
+
     def __str__(self):
         date = str(self.date_published).split(' ')[0]
         object_string = f"{self.user} posted on {date}"

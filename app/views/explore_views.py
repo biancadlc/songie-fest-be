@@ -63,7 +63,7 @@ def explore_posts(request):
             post = {}
             post['id'] = music_post_dict['id']
             post['date'] = music_post_dict['date_published'].__str__().split(' ')[0]
-            post['likes_count'] = music_post_dict['likes_count']
+            post['likes_count'] = music_post.total_likes()
             post['songs'] = []
             for song in music_post.songs.all():
                 song_info = {
