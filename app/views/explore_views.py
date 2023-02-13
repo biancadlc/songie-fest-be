@@ -120,8 +120,11 @@ def change_likes_count(request, pk):
             post.likes.remove(request.user)
         else:
             post.likes.add(request.user)
+        data = {}
+        data['likes_count'] = post.total_likes()
+        # keep in mind that this functino ignores path request data
         serializer = MusicPostSerializer(post,
-                                        data=request.data,
+                                        data=data,
                                         partial=True)
         if serializer.is_valid():
             serializer.save()
