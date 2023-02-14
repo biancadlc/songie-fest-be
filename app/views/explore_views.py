@@ -15,34 +15,6 @@ from django.contrib.auth import get_user_model
 # user has to be logged in (pass token in header) to view music posts
 # GET all music posts, create a music post
 
-
-# UNCOMMENT THIS INCASE OF EMERGENCY
-# post_data = [{
-    
-#         'user': 1,
-#         'username': 'ericgarcia',
-#         'likes_count': 9,
-#         },
-#         {
-#         'user': 2,
-#         'username': 'yamaxu',
-#         'likes_count': 4,
-#         },
-
-#         {
-#         'user': 3,
-#         'username': 'biancadlc',
-#         'likes_count': 3,
-#         },
-#         {
-#         'user': 4,
-#         'username': 'shelbyw',
-#         'likes_count': 2,
-#         },
-        
-
-# ]
-
 @api_view(['GET', 'POST'])
 @permission_classes([IsAuthenticated])
 def explore_posts(request):
@@ -51,15 +23,12 @@ def explore_posts(request):
     '''
     if request.method == 'GET':
         data = {}
-        # data['user'] = str(request.user.first_name)
         for music_post in MusicPost.objects.all():
             music_post_dict = music_post.__dict__
 
             username = str(music_post_dict['username'])
 
             data[username] = data.get(username, [])
-            #checks if username is in dictionary and if not starts with fresh list
-            # data[username] = []
             post = {}
             post['id'] = music_post_dict['id']
             post['date'] = music_post_dict['date_published'].__str__().split(' ')[0]
@@ -76,21 +45,6 @@ def explore_posts(request):
             data[username].append(post)
         return Response(data)
 
-
-
-    # USE THIS TO QUICKLY RECOVER DATABASE CONTENT
-    # UNCOMMENT THIS INCASE OF EMERGENCY
-    # elif request.method == 'POST':
-    #     for post in post_data:
-    #         serializer = MusicPostSerializer(data=post)
-    #         if serializer.is_valid():
-    #             serializer.save()
-    #             return Response(serializer.data,
-    #                             status=status.HTTP_201_CREATED)
-    #     return Response(serializer.errors,
-    #                     status=status.HTTP_400_BAD_REQUEST)
-
-    
     elif request.method == 'POST':
         serializer = MusicPostSerializer(data=request.data)
         if serializer.is_valid():
@@ -119,7 +73,6 @@ def get_username_likes(request, pk):
     if request.method == 'GET':
         data = {}
         usernames = []
-        # print(post.likes.all())
         for user in post.likes.all():
             usernames.append(str(user))
 
@@ -143,7 +96,6 @@ def get_like_count(request, pk):
         post.likes.add(request.user)
     data = {}
     data['likes_count'] = post.total_likes()
-    # keep in mind that this functino ignores path request data
     serializer = MusicPostSerializer(post,
                                     data=data,
                                     partial=True)

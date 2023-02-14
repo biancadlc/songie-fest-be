@@ -30,24 +30,3 @@ def login_user(request):
         data = {'response': 'Incorrect Password'}
         return Response(data, status=status.HTTP_401_UNAUTHORIZED)
 
-    # if request.method == 'GET':
-    #     id = user.pk
-    #     music_posts = MusicPost.objects.filter(user=id)
-    #     serializer = MusicPostSerializer(music_posts, many=True)
-    #     return Response(serializer.data)
-
-    
-    # elif request.method == 'POST':
-    #     requesting_user = request.user
-    #     if user != requesting_user:
-    #         return Response({"response": "You don't have permission to access this info because you are not the user" })
-
-    #     request.data['user'] = user.pk
-    #     request.data['username'] = user.username
-    #     serializer = MusicPostSerializer(data=request.data)
-    #     if serializer.is_valid():
-    #         serializer.save()        
-    #         return Response(serializer.data,
-    #                             status=status.HTTP_201_CREATED)
-    #     return Response(serializer.errors,
-    #                         status=status.HTTP_400_BAD_REQUEST)

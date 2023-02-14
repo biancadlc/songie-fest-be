@@ -58,13 +58,6 @@ def profile_view(request, username):
         return Response(data)
 
 
-
-
-
-        # serializer = MusicPostSerializer(music_posts, many=True)
-        # return Response(serializer.data)
-
-    
     elif request.method == 'POST':
         requesting_user = request.user
         if user != requesting_user:
