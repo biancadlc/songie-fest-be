@@ -147,7 +147,8 @@ class MusicPost(models.Model):
         return self.likes.count()
 
     def __str__(self):
-        date = str(self.date_published).split(' ')[0]
+        date = str(self.date_published)
+        # date = str(self.date_published).split(' ')[0]
         object_string = f"{self.user} posted on {date}"
         return object_string
 
