@@ -33,9 +33,36 @@ def profile_view(request, username):
 
     if request.method == 'GET':
         id = user.pk
+        
+        data = {}
+        # data['user'] = str(request.user.first_name)
         music_posts = MusicPost.objects.filter(user=id)
-        serializer = MusicPostSerializer(music_posts, many=True)
-        return Response(serializer.data)
+        data = []
+        for music_post in music_posts:
+            music_post_dict = music_post.__dict__
+            post = {}
+            post['username'] = str(music_post_dict['username'])
+            post['id'] = music_post_dict['id']
+            post['date'] = music_post_dict['date_published'].__str__().split(' ')[0]
+            post['likes_count'] = music_post.total_likes()
+            post['songs'] = []
+            for song in music_post.songs.all():
+                song_info = {
+                    'id': song.id,
+                    'title': song.title,
+                    'artist': song.artist,
+                    'play_count': song.play_count
+                    }
+                post['songs'].append(song_info)
+            data.append(post)
+        return Response(data)
+
+
+
+
+
+        # serializer = MusicPostSerializer(music_posts, many=True)
+        # return Response(serializer.data)
 
     
     elif request.method == 'POST':
