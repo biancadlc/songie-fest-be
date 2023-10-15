@@ -1,17 +1,11 @@
 # songie-fest-be
 
-# IMPORTANT
-# 
 
-# 1) Start using postman
+# Usage Instructions for Postman:
 
-# 2) make sure you are passing the token as an authorization header in postman
-#     imagine the token is 123456
-#     in post man you would make the authorization value: Token 123456 
-#     (space between Token and 123456 and everything without quotes)
-# 
-# 3) If you are changing an accounts details you need to pass through that 
-#     specific users token gain access and change their details
+# 1. Ensure that you pass the token as an authorization header in Postman.
+  For instance, if the token is '123456', set the authorization value as 'Token 123456' (with a space between 'Token' and '123456', and without quotes).
 
-# 4) Do not forget the slash at the end of endpoints
-#    if you forget you will get an error message in postman without a response
+# 2. When modifying an account's details, you must use that specific user's token to gain access and make the necessary changes.
+
+# 3. Remember to include a slash at the end of endpoints. Omitting the slash will result in an error message in Postman without a response.
